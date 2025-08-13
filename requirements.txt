@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+requests
+joblib==1.5.1
+scikit-learn==1.7.1
+holidays
+matplotlib
+xgboost
+plotly
