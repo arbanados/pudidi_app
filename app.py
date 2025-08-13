@@ -175,8 +175,22 @@ def get_coordinator_cmg_by_range(start_date: str, end_date: str) -> pd.DataFrame
         "limit": 20000,
         "user_key": DEFAULT_USER_KEY,
     }
-    r = requests.get(DEFAULT_COORD_API_URL, params=params, timeout=30)
-    r.raise_for_status()
+    try:
+        r = requests.get(
+            "https://sipub.api.coordinador.cl:443/cmg-programado-pid/v4/findByDate",
+            params=params,
+            timeout=30
+        )
+        r.raise_for_status()
+    except HTTPError:
+        # Retry with PCP endpoint
+        r = requests.get(
+            "https://sipub.api.coordinador.cl:443/cmg-programado-pcp/v4/findByDate",
+            params=params,
+            timeout=30
+        )
+        r.raise_for_status()
+    
     payload = r.json()
 
     if "data" not in payload:
@@ -374,6 +388,7 @@ if show_table_cmg and not cmg_df.empty:
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
 
 
 
