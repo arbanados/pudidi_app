@@ -15,6 +15,7 @@ import requests
 import streamlit as st
 import plotly.express as px
 import xgboost as xgb
+from requests.exceptions import HTTPError
 
 # ----- Streamlit cache polyfills for old versions -----
 if not hasattr(st, "cache_resource"):
@@ -388,6 +389,7 @@ if show_table_cmg and not cmg_df.empty:
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
 
 
 
