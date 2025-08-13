@@ -1,5 +1,5 @@
 # app.py
-# Electricity Demand: Coordinador API (today) + ML Forecast (today+1+2)
+# Electricity Prices: Coordinador API (today) + ML Forecast (today+1+2)
 
 import os
 import io
@@ -288,7 +288,7 @@ def plot_ml_forecast(df_pred: pd.DataFrame):
         markers=True,
         labels={
             "datetime": "Hora (CLT)",
-            "predicted_demand": "Demanda predicha (MW)",
+            "predicted_demand": "Costo predecido (USD/MWh)",
             "target_date": "Día objetivo",
         },
         title=None,
@@ -315,7 +315,7 @@ with st.sidebar:
     selected_date = st.date_input(
         "Día de referencia (hora de Chile)",
         value=default_today,
-        help="Se usa como ‘hoy’. El modelo ML corre para hoy + 2 días. El CMG se muestra para este día seleccionado.",
+        help="Se usa como ‘hoy’. El modelo ML corre para hoy + 2 días. El CMg se muestra para este día seleccionado.",
     )
     show_table_cmg = st.checkbox("Mostrar datos del Coordinador", value=False)
 
@@ -394,6 +394,7 @@ if show_table_cmg and not cmg_df.empty:
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
 
 
 
