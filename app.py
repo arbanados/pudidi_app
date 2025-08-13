@@ -310,15 +310,7 @@ ml_days = [today_ds, tomorrow_ds, day_after_ds]
 
 st.markdown(f"**‘Hoy’ seleccionado (Chile):** `{today_ds}`  |  **Horizonte ML:** `{ml_days}`")
 
-# -----------------------------
-# 1) API COORDINADOR (día seleccionado)
-# -----------------------------
-st.subheader("CMg programado (API del Coordinador)")
-with st.spinner("Obteniendo datos de la API del Coordinador..."):
-    cmg_df = get_coordinator_cmg_by_range(today_ds, (datetime.strptime(today_ds, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d"))
-plot_cmg(cmg_df)
-if show_table_cmg and not cmg_df.empty:
-    st.dataframe(cmg_df)
+
 
 # -----------------------------
 # 2) PREDICCIÓN ML (hoy + 2 días) — rezagos continuos entre días
@@ -367,6 +359,19 @@ plot_ml_forecast(pred_df)
 with st.expander("Ver tabla de predicción ML"):
     st.dataframe(pred_df.reset_index(drop=True))
 
+
+# -----------------------------
+# 1) API COORDINADOR (día seleccionado)
+# -----------------------------
+st.subheader("CMg programado (API del Coordinador)")
+with st.spinner("Obteniendo datos de la API del Coordinador..."):
+    cmg_df = get_coordinator_cmg_by_range(today_ds, (datetime.strptime(today_ds, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d"))
+plot_cmg(cmg_df)
+
+
+if show_table_cmg and not cmg_df.empty:
+    st.dataframe(cmg_df)
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
