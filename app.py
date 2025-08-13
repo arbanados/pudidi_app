@@ -165,7 +165,6 @@ def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
     df["is_holiday"] = df["datetime"].dt.date.apply(lambda x: x in cl_holidays)
     return df
 
-# === NEW: explicit CMG fetch for any date range ===
 @st.cache_data(show_spinner=False, ttl=5 * 60)
 def get_coordinator_cmg_by_range(start_date: str, end_date: str) -> pd.DataFrame:
     """Fetch CMG from Coordinador for [start_date, end_date)."""
@@ -219,18 +218,24 @@ def get_coordinator_cmg_by_range(start_date: str, end_date: str) -> pd.DataFrame
         )
     elif "time" in df.columns:
         ts = df["time"]
-
+    
     if ts is None:
-        # no recognized timestamp fields; create an all-NaT Series
         df["timestamp"] = pd.Series(pd.NaT, index=df.index)
     else:
-        # ensure Series, then coerce to tz-aware UTC and convert to Chile tz
         if not isinstance(ts, pd.Series):
             ts = pd.Series(ts, index=df.index)
-        ts = pd.to_datetime(ts, errors="coerce", utc=True)  # naive treated as UTC
-        # ts is now datetime64[ns, UTC], so .dt is safe
-        df["timestamp"] = ts.dt.tz_convert(CL_TZ)
+    
+        # Special handling if already in local time
+        if "fecha_hora" in df.columns:
+            # Parse as naive local time, then localize
+            ts = pd.to_datetime(ts, errors="coerce").dt.tz_localize(CL_TZ)
+        else:
+            # Treat as UTC, then convert
+            ts = pd.to_datetime(ts, errors="coerce", utc=True).dt.tz_convert(CL_TZ)
+    
+        df["timestamp"] = ts
     # -------------------------------------------
+
 
     # Heuristic for CMG numeric column
     if "cmg_usd_mwh" in df.columns:
@@ -389,6 +394,7 @@ if show_table_cmg and not cmg_df.empty:
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
 
 
 
