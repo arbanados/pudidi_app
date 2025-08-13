@@ -172,7 +172,7 @@ def get_coordinator_cmg_by_range(start_date: str, end_date: str) -> pd.DataFrame
         "startDate": start_date,
         "endDate": end_date,  # exclusive end
         "page": 1,
-        "limit": 100000,
+        "limit": 20000,
         "user_key": DEFAULT_USER_KEY,
     }
     r = requests.get(DEFAULT_COORD_API_URL, params=params, timeout=30)
@@ -374,5 +374,6 @@ if show_table_cmg and not cmg_df.empty:
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
 
 
