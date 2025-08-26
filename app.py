@@ -36,7 +36,7 @@ LAT, LON = -42.3565, -73.7192
 CL_TZ = "America/Santiago"
 
 DEFAULT_COORD_API_URL = "https://sipub.api.coordinador.cl:443/cmg-programado-pid/v4/findByDate"
-DEFAULT_USER_KEY = "bae940cb90ef4111ffacb6baa9806fc0"  # consider moving to st.secrets
+DEFAULT_USER_KEY = "4505e2e4480b71c6b92028b1a1fde0aa"  # consider moving to st.secrets
 CMG_KEYS = ["Chiloe110", "Chonchi110", "Pid-Pid110"]
 
 MODEL_ZIP = "xgbmodel_vgpt5.zip"
@@ -394,6 +394,7 @@ if show_table_cmg and not cmg_df.empty:
 with st.sidebar:
     st.markdown("---")
     st.caption("📌 Autor: Alejandro Bañados")
+
 
 
 
